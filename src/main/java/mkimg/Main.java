@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Iterator;
-
+public static final int BLOCK_SIZE_CD = 2048;
+public static final int BLOCK_SIZE_HD = 512;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        int blockSize = 2048;
+        int blockSize = BLOCK_SIZE_CD;
         String out = null;
         UDFBuild udf = new UDFBuild();
         TreeNode root;
@@ -36,7 +37,7 @@ public class Main {
                 } else if ("--manifest".equals(arg) || "--checksum".equals(arg)) {
                     addManifest = true;
                 } else if ("--hd".equals(arg)) {
-                    blockSize = 512;
+                    blockSize = BLOCK_SIZE_HD;
                 } else if (("--cache-inodes".equals(arg) || "-h".equals(arg))) {
                     fs.cacheInodes = true;
                 } else if ("--no-cache-inodes".equals(arg)) {
