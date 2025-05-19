@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/sh 
 SCRIPT="$0"
 # Catch common issue: script has been symlinked
 if [ -L "$SCRIPT" ]

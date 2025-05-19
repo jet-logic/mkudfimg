@@ -27,18 +27,19 @@ jobs:
 
       - name: Find
         run: |
-          ls -lhAR .build
-          mv -v .build/mkudfimg*.jar bin/mkudfimg.jar
+          ls -lhAR target
+          mv -v target/mkudfimg*.jar bin/mkudfimg.jar
           ls -lhAR bin
 
       - name: Help
         run: |
-          sh bin/mkudfimg.sh --help
-          sh bin/mkudfimg.sh --version
+          chmod +x bin/mkudfimg
+          bin/mkudfimg --help
+          bin/mkudfimg --version
 
       - name: Run
         run: |
-          sh bin/mkudfimg.sh src -o /tmp/img.udf
+          bin/mkudfimg src -o /tmp/img.udf
 
       # - name: Run tests
       #   run: mvn -B test
