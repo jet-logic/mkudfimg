@@ -22,8 +22,8 @@ jobs:
 
       - name: Move
         run: |
-          ls -lhAR .build
-          mv -v .build/mkudfimg*.jar bin/mkudfimg.jar
+          ls -lhAR target
+          mv -v target/mkudfimg*.jar bin/mkudfimg.jar
           ls -lhAR bin
 
       - name: Create tar.gz of bin files
