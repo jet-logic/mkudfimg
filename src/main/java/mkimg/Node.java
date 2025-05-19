@@ -50,7 +50,7 @@ public interface Node<T> extends Iterable<Node<T>> {
 
     @Override
     default public Iterator<Node<T>> iterator() {
-        return new EmptyIterator();
+        return new EmptyIterator<>();
     }
 
     default public List<Node<T>> getChildren() {
@@ -62,11 +62,11 @@ public interface Node<T> extends Iterable<Node<T>> {
     }
 
     default public Iterator<Node<T>> depthFirstIterator() {
-        return new PostorderEnum(this);
+        return new PostorderEnum<>(this);
     }
 
     default public Iterable<Node<T>> depthFirstIterable() {
-        return () -> new PostorderEnum(this);
+        return () -> new PostorderEnum<>(this);
     }
 
     default public Stream<Node<T>> depthFirst() {
@@ -74,7 +74,7 @@ public interface Node<T> extends Iterable<Node<T>> {
     }
 
     default public Iterator<Node<T>> ascentIterator() {
-        return new Ascent(this);
+        return new Ascent<>(this);
     }
 
     default public void descend(Consumer<Node<T>> x) {
@@ -121,7 +121,7 @@ public interface Node<T> extends Iterable<Node<T>> {
 
     }
 
-    static class PostorderEnum<V extends Iterable> implements Iterator<V> {
+    static class PostorderEnum<V extends Iterable<V>> implements Iterator<V> {
 
         protected V root;
         protected Iterator<V> children;
@@ -146,7 +146,7 @@ public interface Node<T> extends Iterable<Node<T>> {
             if (subtree.hasNext()) {
                 retval = subtree.next();
             } else if (children.hasNext()) {
-                subtree = new PostorderEnum(children.next());
+                subtree = new PostorderEnum<>(children.next());
                 retval = subtree.next();
             } else {
                 retval = root;

@@ -4,9 +4,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Iterator;
-public static final int BLOCK_SIZE_CD = 2048;
-public static final int BLOCK_SIZE_HD = 512;
+
 public class Main {
+    public static final int BLOCK_SIZE_CD = 2048;
+    public static final int BLOCK_SIZE_HD = 512;
 
     public static void main(String[] args) throws IOException {
         int blockSize = BLOCK_SIZE_CD;
@@ -42,11 +43,11 @@ public class Main {
                     fs.cacheInodes = true;
                 } else if ("--no-cache-inodes".equals(arg)) {
                     fs.cacheInodes = false;
-				} else if (("--link-duplicates".equals(arg) || "-H".equals(arg))) {
+                } else if (("--link-duplicates".equals(arg) || "-H".equals(arg))) {
                     fs.linkDuplicates = true;
                 } else if ("--no-link-duplicates".equals(arg)) {
                     fs.linkDuplicates = false;
-				} else if (("--follow-links".equals(arg) || "-f".equals(arg))) {
+                } else if (("--follow-links".equals(arg) || "-f".equals(arg))) {
                     fs.followLinks = true;
                 } else if (("--no-follow-links".equals(arg))) {
                     fs.followLinks = false;
@@ -90,9 +91,9 @@ public class Main {
                     man.flag |= (TreeNode.HIDE | TreeNode.IGNORE);
                 }
             }
-            if(fs.cacheInodes){
+            if (fs.cacheInodes) {
                 fs.inoCache = new Hashtable<>();
-            }else{
+            } else {
                 fs.inoCache = null;
             }
             if (fs.linkDuplicates) {
@@ -115,31 +116,31 @@ public class Main {
     }
 }
 /*
-		}else if(opt_get_bool(&o, ('k'), ("check-duplicates"))){
-			db.checkDuplicates = !!o.bparam;
-		}else if(opt_get_bool(&o, ('i'), ("interactive"))){
-			db.userInteractive = o.bparam ? 2 : 0;
-		}else if(opt_get_bool(&o, ('b'), ("batch"))){
-			db.userInteractive = o.bparam ? 0 : 2;
-		}else if(opt_get_bool(&o, 0, ("calc-digest"))){
-			db.calcDigest = !!o.bparam;
-		}else if(opt_get_bool(&o, 0, ("manifest"))){ // OPT, DOC
-			db.addManifest = !!o.bparam;
-		}else if(opt_get_bool(&o, 0, ("zero-size"))){ // DOC
-			db.zeroSize = o.bparam ? 1 : 0;
-
-		}else if(opt_get_bool(&o, 0, ("verbose"))){ // DOC
-			db.verbosity = (o.bparam ? 1 : 0);
-		}else if(opt_get_bool(&o, 0, ("quiet"))){ // DOC
-			db.verbosity = (o.bparam ? 0 : 1);
-		}else if(opt_get_bool(&o, 0, ("sort-size"))){
-			db.sortSize = (o.bparam ? 1 : 0);
-		}else if(opt_get_bool(&o, 0, ("carryon"))){
-			db.carryOn = (o.bparam ? 1 : 0);
-		}else if(opt_get_param(&o, 0, ("system-area"))){
-			db.set("system-area", o.sparam);
-		}else if(opt_get_bool(&o, 0, ("archive"))){ // OPT, DOC
-			db.setArchived = (o.bparam ? 1 : 0);
-		}else if(opt_get_bool(&o, 0, ("compact"))){ // OPT, DOC
-			db.compactSpace = (o.bparam ? 1 : 0);
+ * }else if(opt_get_bool(&o, ('k'), ("check-duplicates"))){
+ * db.checkDuplicates = !!o.bparam;
+ * }else if(opt_get_bool(&o, ('i'), ("interactive"))){
+ * db.userInteractive = o.bparam ? 2 : 0;
+ * }else if(opt_get_bool(&o, ('b'), ("batch"))){
+ * db.userInteractive = o.bparam ? 0 : 2;
+ * }else if(opt_get_bool(&o, 0, ("calc-digest"))){
+ * db.calcDigest = !!o.bparam;
+ * }else if(opt_get_bool(&o, 0, ("manifest"))){ // OPT, DOC
+ * db.addManifest = !!o.bparam;
+ * }else if(opt_get_bool(&o, 0, ("zero-size"))){ // DOC
+ * db.zeroSize = o.bparam ? 1 : 0;
+ * 
+ * }else if(opt_get_bool(&o, 0, ("verbose"))){ // DOC
+ * db.verbosity = (o.bparam ? 1 : 0);
+ * }else if(opt_get_bool(&o, 0, ("quiet"))){ // DOC
+ * db.verbosity = (o.bparam ? 0 : 1);
+ * }else if(opt_get_bool(&o, 0, ("sort-size"))){
+ * db.sortSize = (o.bparam ? 1 : 0);
+ * }else if(opt_get_bool(&o, 0, ("carryon"))){
+ * db.carryOn = (o.bparam ? 1 : 0);
+ * }else if(opt_get_param(&o, 0, ("system-area"))){
+ * db.set("system-area", o.sparam);
+ * }else if(opt_get_bool(&o, 0, ("archive"))){ // OPT, DOC
+ * db.setArchived = (o.bparam ? 1 : 0);
+ * }else if(opt_get_bool(&o, 0, ("compact"))){ // OPT, DOC
+ * db.compactSpace = (o.bparam ? 1 : 0);
  */
