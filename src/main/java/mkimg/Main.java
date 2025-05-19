@@ -76,11 +76,11 @@ public class Main {
                     }
                 }
                 if (useEtc) {
-                    Node man = (TreeNode) ((TreeNode) root.internTree(".etc")).internFile("checksum");
+                    TreeNode man = (TreeNode) ((TreeNode) root.internTree(".etc")).internFile("checksum");
                     man.setData(new Inode.Manifest());
                     for (;;) {
                         ((TreeNode) man).flag |= (TreeNode.HIDE | TreeNode.IGNORE);
-                        man = man.getParent();
+                        man = (TreeNode) man.getParent();
                         if (man == null || man.getChildren().size() > 1) {
                             break;
                         }

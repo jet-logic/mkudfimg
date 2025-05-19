@@ -6,7 +6,6 @@
 package mkimg;
 
 import java.nio.ByteBuffer;
-import java.time.OffsetDateTime;
 
 /**
  *
@@ -15,7 +14,7 @@ import java.time.OffsetDateTime;
 public class XTime {
 
     static public long of(int year, int mon, int day, int hour, int min, int sec, int offset) {
-        long x = 0
+        return 0
                 | ((long) (Short.toUnsignedInt((short) year) & 0x7FFF) << 38)
                 | ((long) (Byte.toUnsignedInt((byte) mon) & 0xF)) << 34
                 | ((long) (Byte.toUnsignedInt((byte) day) & 0x1F)) << 29
@@ -23,7 +22,6 @@ public class XTime {
                 | ((long) (Byte.toUnsignedInt((byte) min) & 0x3F)) << 18
                 | ((long) (Byte.toUnsignedInt((byte) sec) & 0x3F)) << 12
                 | ((long) (Short.toUnsignedInt((short) offset) & 0x7FFF));
-        return 0;
     }
 
     static public boolean isValid(long x) {
@@ -31,22 +29,23 @@ public class XTime {
     }
 
     /*
-    static public OffsetDateTime toOffsetDateTime(long x) {
-        long y = ((x) >> 38) & 0x7FFF;
-        if (y > ((1 << 14) - 1)) {
-            y -= (1 << 15);
-        }
-        byte l = (byte) (((x) >> 34) & 0xF);
-        byte d = (byte) (((x) >> 29) & 0x1F);
-        byte h = (byte) (((x) >> 24) & 0x1F);
-        byte m = (byte) (((x) >> 18) & 0x3F);
-        byte s = (byte) (((x) >> 12) & 0x3F);
-        short o = (short) ((x) & 0xfff);
-        if (o > ((1 << 11) - 1)) {
-            o -= (1 << 12);
-        }
-        return null;
-    }*/
+     * static public OffsetDateTime toOffsetDateTime(long x) {
+     * long y = ((x) >> 38) & 0x7FFF;
+     * if (y > ((1 << 14) - 1)) {
+     * y -= (1 << 15);
+     * }
+     * byte l = (byte) (((x) >> 34) & 0xF);
+     * byte d = (byte) (((x) >> 29) & 0x1F);
+     * byte h = (byte) (((x) >> 24) & 0x1F);
+     * byte m = (byte) (((x) >> 18) & 0x3F);
+     * byte s = (byte) (((x) >> 12) & 0x3F);
+     * short o = (short) ((x) & 0xfff);
+     * if (o > ((1 << 11) - 1)) {
+     * o -= (1 << 12);
+     * }
+     * return null;
+     * }
+     */
 
     public static void putTimestamp(long x, ByteBuffer b) {
         long y = ((x) >> 38) & 0x7FFF;

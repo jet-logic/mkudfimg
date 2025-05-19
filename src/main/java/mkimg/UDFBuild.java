@@ -35,7 +35,9 @@ public class UDFBuild {
     public String fileSetIdentifier;
     private long lbaMainVolumeDesc;
     private long lbaUDFPartitionStart;
-    byte[] ENTITYID_OSTA_COMPLIANT = new byte[]{'\00', '*', 'O', 'S', 'T', 'A', ' ', 'U', 'D', 'F', ' ', 'C', 'o', 'm', 'p', 'l', 'i', 'a', 'n', 't', '\00', '\00', '\00', '\00', '\02', '\01', '\03', '\00', '\00', '\00', '\00', '\00'};
+    byte[] ENTITYID_OSTA_COMPLIANT = new byte[] { '\00', '*', 'O', 'S', 'T', 'A', ' ', 'U', 'D', 'F', ' ', 'C', 'o',
+            'm', 'p', 'l', 'i', 'a', 'n', 't', '\00', '\00', '\00', '\00', '\02', '\01', '\03', '\00', '\00', '\00',
+            '\00', '\00' };
     private long lbaReserveVolumeDesc = -1;
     boolean addManifest = false;
 
@@ -47,12 +49,13 @@ public class UDFBuild {
         assert ((out.blockSize % 512) == 0);
         assert ((32768 / out.blockSize) == out.nExtent);
         ByteBuffer b = out.getBuffer();
-        byte[][] vrid = new byte[][]{{'B', 'E', 'A', '0', '1'}, {'N', 'S', 'R', '0', '2'}, {'T', 'E', 'A', '0', '1'}};
+        byte[][] vrid = new byte[][] { { 'B', 'E', 'A', '0', '1' }, { 'N', 'S', 'R', '0', '2' },
+                { 'T', 'E', 'A', '0', '1' } };
         Arrays.fill(b.array(), 0, 2048, (byte) 0);
         for (int i = 0; i < 3; ++i) {
             b.clear();
             b.put((byte) 0);// StructureType
-            b.put(vrid[i]);//StandardIdentifier
+            b.put(vrid[i]);// StandardIdentifier
             b.put((byte) 1);// StructureVersion
             out.write(b.array(), 0, 2048);
         }
@@ -86,7 +89,7 @@ public class UDFBuild {
         b.position(16);
         // struct timestamp RecordingDateAndTime;
         UDFWrite.putTimestamp(b, this.logicalVolumeIntegrityDescTime);
-        // Uint32 IntegrityType  (Close Integrity Descriptor)
+        // Uint32 IntegrityType (Close Integrity Descriptor)
         b.putInt(1);
         // extent_ad NextIntegrityExtent;
         b.putInt(0).putInt(0);
@@ -94,7 +97,7 @@ public class UDFBuild {
         {
             // Uint64 UniqueID;
             b.putLong(this.nLastUniqueID);
-            // 	byte reserved[24];
+            // byte reserved[24];
             UDFWrite.zfill(b, 24);
         }
         // Uint32 NumberOfPartitions;
@@ -183,25 +186,26 @@ public class UDFBuild {
             b.put(this.applicationIdentifier);
             // byte ImplementationUse[64];
             UDFWrite.zfill(b, 64);
-            //Uint32 PredecessorVolumeDescriptorSequenceLocation;
+            // Uint32 PredecessorVolumeDescriptorSequenceLocation;
             b.putInt(0);
-            //Uint16 Flags;
+            // Uint16 Flags;
             b.putShort((short) 0);
-            //byte Reserved[22];
+            // byte Reserved[22];
             UDFWrite.zfill(b, 22);
             // Write
             out.writep(UDFWrite.descriptorTag(b, (short) 1, out.nExtent, b.position()).array(), 0, b.position());
             assert (512 == b.position());
         }
-        //struct ImpUseVolumeDescriptor 
+        // struct ImpUseVolumeDescriptor
         {
-            //struct tag DescriptorTag;
+            // struct tag DescriptorTag;
             b.clear().position(16);
-            //Uint32 VolumeDescriptorSequenceNumber;
+            // Uint32 VolumeDescriptorSequenceNumber;
             b.putInt(1);
-            //struct EntityID ImplementationIdentifier;
-            UDFWrite.putEntityId(b, 0, new byte[]{'*', 'U', 'D', 'F', ' ', 'L', 'V', ' ', 'I', 'n', 'f', 'o'}, new byte[]{2, 1});
-            //struct LVInformation ImplementationUse;
+            // struct EntityID ImplementationIdentifier;
+            UDFWrite.putEntityId(b, 0, new byte[] { '*', 'U', 'D', 'F', ' ', 'L', 'V', ' ', 'I', 'n', 'f', 'o' },
+                    new byte[] { 2, 1 });
+            // struct LVInformation ImplementationUse;
             {
                 // LVICharset
                 UDFWrite.putCharSpecOSTACompressedUnicode(b);
@@ -218,7 +222,7 @@ public class UDFBuild {
             out.writep(UDFWrite.descriptorTag(b, (short) 4, out.nExtent, b.position()).array(), 0, b.position());
             assert (512 == b.position());
         }
-        //   struct PartitionDescriptor 
+        // struct PartitionDescriptor
         {
             // struct tag DescriptorTag;
             b.clear().position(16);
@@ -229,7 +233,7 @@ public class UDFBuild {
             // Uint16 PartitionNumber;
             b.putShort((short) 0);
             // struct EntityID PartitionContents;
-            UDFWrite.putEntityId(b, 0, new byte[]{'+', 'N', 'S', 'R', '0', '2'}, new byte[]{2, 1});
+            UDFWrite.putEntityId(b, 0, new byte[] { '+', 'N', 'S', 'R', '0', '2' }, new byte[] { 2, 1 });
             // byte PartitionContentsUse[128];
             UDFWrite.zfill(b, 128);
             // Uint32 AccessType;
@@ -248,7 +252,7 @@ public class UDFBuild {
             out.writep(UDFWrite.descriptorTag(b, (short) 5, out.nExtent, b.position()).array(), 0, b.position());
             assert (512 == b.position());
         }
-        // struct LogicalVolumeDescriptor 
+        // struct LogicalVolumeDescriptor
         {
             // struct tag DescriptorTag;
             b.clear().limit(446).position(16);
@@ -293,7 +297,7 @@ public class UDFBuild {
             out.writep(UDFWrite.descriptorTag(b, (short) 6, out.nExtent, b.position()).array(), 0, b.position());
             assert (446 == b.position());
         }
-        // struct UnallocatedSpaceDesc  // ISO 13346 3/10.8 
+        // struct UnallocatedSpaceDesc // ISO 13346 3/10.8
         {
             // struct tag DescriptorTag;
             b.clear().position(16);
@@ -311,7 +315,7 @@ public class UDFBuild {
 
     void anchorVolumeDescriptorPointer(BlockSink out) throws IOException {
         System.err.printf("@%9d AVDP\t\n", out.nExtent);
-        // struct AnchorVolumeDescriptorPointer  // ISO 13346 3/10.2
+        // struct AnchorVolumeDescriptorPointer // ISO 13346 3/10.2
         ByteBuffer b = out.getBuffer();
         // struct tag DescriptorTag;
         b.limit(512).position(16);
@@ -332,49 +336,51 @@ public class UDFBuild {
 
     void filesetDescriptor(BlockSink out, TreeNode root) throws IOException {
         System.err.printf("@%9d FSD\t\n", out.nExtent);
-//struct FileSetDescriptor { /* ISO 13346 4/14.1 */
+        // struct FileSetDescriptor { /* ISO 13346 4/14.1 */
         ByteBuffer b = out.getBuffer();
-//        struct tag DescriptorTag;
+        // struct tag DescriptorTag;
         b.limit(512).position(16);
-//        struct timestamp RecordingDateandTime;
+        // struct timestamp RecordingDateandTime;
         UDFWrite.putTimestamp(b, recordingDateandTime);
-//        Uint16 InterchangeLevel;
+        // Uint16 InterchangeLevel;
         b.putShort((short) 3);
-//        Uint16 MaximumInterchangeLevel;
+        // Uint16 MaximumInterchangeLevel;
         b.putShort((short) 3);
-//        Uint32 CharacterSetList;
+        // Uint32 CharacterSetList;
         b.putInt(1);
-//        Uint32 MaximumCharacterSetList;
+        // Uint32 MaximumCharacterSetList;
         b.putInt(1);
-//        Uint32 FileSetNumber;
+        // Uint32 FileSetNumber;
         b.putInt(0);
-//        Uint32 FileSetDescriptorNumber;
+        // Uint32 FileSetDescriptorNumber;
         b.putInt(0);
-//        struct charspec LogicalVolumeIdentifierCharacterSet;
+        // struct charspec LogicalVolumeIdentifierCharacterSet;
         UDFWrite.putCharSpecOSTACompressedUnicode(b);
-//        dstring LogicalVolumeIdentifier[128];
+        // dstring LogicalVolumeIdentifier[128];
         UDFWrite.putDString(b, logicalVolumeIdentifier, 128, false);
-//        struct charspec FileSetCharacterSet;
+        // struct charspec FileSetCharacterSet;
         UDFWrite.putCharSpecOSTACompressedUnicode(b);
-//        dstring FileSetIdentifer[32];
+        // dstring FileSetIdentifer[32];
         UDFWrite.putDString(b, fileSetIdentifier, 32, false);
-//        dstring CopyrightFileIdentifier[32];
+        // dstring CopyrightFileIdentifier[32];
         UDFWrite.putDString(b, "copyright", 32, false);
-//        dstring AbstractFileIdentifier[32];
+        // dstring AbstractFileIdentifier[32];
         UDFWrite.putDString(b, "abstract", 32, false);
-//        struct long_ad RootDirectoryICB;
+        // struct long_ad RootDirectoryICB;
         b.putInt(out.blockSize);
         b.putInt((int) (root.getData().auxA - this.lbaUDFPartitionStart)).putShort((short) 0);
         b.putShort((short) 0).putInt(0);
-//        struct EntityID DomainIdentifier;
+        // struct EntityID DomainIdentifier;
         b.put(ENTITYID_OSTA_COMPLIANT);
-//        struct long_ad NextExtent;
+        // struct long_ad NextExtent;
         b.putInt(0).putInt(0).putInt(0).putInt(0);
-//        byte Reserved[48];
+        // byte Reserved[48];
         UDFWrite.zfill(b, 48);
-//};
+        // };
         // Write
-        out.writep(UDFWrite.descriptorTag(b, (short) 256, out.nExtent - this.lbaUDFPartitionStart, b.position()).array(), 0, b.position());
+        out.writep(
+                UDFWrite.descriptorTag(b, (short) 256, out.nExtent - this.lbaUDFPartitionStart, b.position()).array(),
+                0, b.position());
         assert (512 == b.position());
         UDFBuild.terminatingDescriptor(out, out.nExtent - this.lbaUDFPartitionStart);
     }
@@ -417,12 +423,14 @@ public class UDFBuild {
         if (ext.isEntry()) {
             System.err.printf("@%9d e %16d %s\t\n", out.nExtent, ino.auxB, path);
             if (out.nStage > 0) {
-                ino.auxA = out.nExtent++; // 1 block 
+                ino.auxA = out.nExtent++; // 1 block
                 assert (ino.nlink > 0);
             } else {
                 assert (ino.auxA == out.nExtent);
                 assert ((ino.auxB == 0) || (ino.auxB > this.lbaUDFPartitionStart));
-                UDFWriteFile.fileEntry(out, ino, (cur.getParent() == null) ? 0 : 16 + ext.seq, this.applicationIdentifier, ino.auxA - this.lbaUDFPartitionStart, ino.auxB - this.lbaUDFPartitionStart);
+                UDFWriteFile.fileEntry(out, ino, (cur.getParent() == null) ? 0 : 16 + ext.seq,
+                        this.applicationIdentifier, ino.auxA - this.lbaUDFPartitionStart,
+                        ino.auxB - this.lbaUDFPartitionStart);
             }
             // !ext.isEntry()
         } else if (ino.isDirectory()) {
@@ -436,7 +444,8 @@ public class UDFBuild {
             }
             _size += fileItem(out, parent, null, rbaBase, parent.getData().auxA - lbaUDFPartitionStart);
             for (Node<Inode> child : cur) {
-                _size += fileItem(out, child, child.getName(), rbaBase + (_size / out.blockSize), child.getData().auxA - lbaUDFPartitionStart);
+                _size += fileItem(out, child, child.getName(), rbaBase + (_size / out.blockSize),
+                        child.getData().auxA - lbaUDFPartitionStart);
             }
             out.writep();
             if (out.nStage > 0) {
@@ -464,9 +473,9 @@ public class UDFBuild {
                         Manifest.SinkCounter o = new Manifest.SinkCounter();
                         Manifest.write(o, cur.getRoot(), true);
                         ino.size = o.getCount();
-//                        } else {
-//                            Manifest.write(out, cur.getRoot());
-//                            out.writep();
+                        // } else {
+                        // Manifest.write(out, cur.getRoot());
+                        // out.writep();
                     }
                 }
                 long nSizePadded = out.calcBlocks(ino.size);
@@ -478,7 +487,7 @@ public class UDFBuild {
                     Manifest.write(out, cur.getRoot(), false);
                     assert ((((out.nExtent - ino.auxB) * out.blockSize) + out.nLeft) == ino.size);
                     out.writep();
-//                }else if(ino.isSymLink()){
+                    // }else if(ino.isSymLink()){
 
                 } else {
                     MessageDigest md = addManifest ? Inode.getMessageDigest() : null;
@@ -528,9 +537,9 @@ public class UDFBuild {
             } else {
                 assert (ino.isDirectory());
             }
-            //cur.descend(n -> System.err.print("/" + n.getName()));
-            //System.err.println();
-// Supply time
+            // cur.descend(n -> System.err.print("/" + n.getName()));
+            // System.err.println();
+            // Supply time
             if (ino.mtime == null || ino.atime == null || ino.ctime == null) {
                 if (ino.isDirectory()) {
                     Instant mtime = null, ctime = null, atime = null;
@@ -596,7 +605,7 @@ public class UDFBuild {
                     ino.ctime = defaultTime;
                 }
             }
-//            System.err.printf("%s %s %s\n", ino.mtime, ino.ctime, ino.atime);
+            // System.err.printf("%s %s %s\n", ino.mtime, ino.ctime, ino.atime);
             if (ino.isDirectory()) {
                 Node<Inode> parent = cur.getParent();
                 if (parent != null) {
@@ -625,10 +634,11 @@ public class UDFBuild {
         }
 
         supplyTree(root);
-// prep vars
+        // prep vars
         {
             // Set VolumeSetIdentifier
-            // 	 - CS0 representation of unique hex number in first 8 character positions, UDF 2.2.2.5
+            // - CS0 representation of unique hex number in first 8 character positions, UDF
+            // 2.2.2.5
             if (volumeSetIdentifier == null || volumeSetIdentifier.isEmpty()) {
                 Random rnd = new Random();
                 volumeSetIdentifier = String.format("%08X UDF Volume Set", rnd.nextInt());
@@ -641,7 +651,8 @@ public class UDFBuild {
                 }
             }
             if (logicalVolumeIdentifier == null || logicalVolumeIdentifier.isEmpty()) {
-                logicalVolumeIdentifier = String.format("UDF%S", Long.toString(now.toEpochSecond(), Character.MAX_RADIX));
+                logicalVolumeIdentifier = String.format("UDF%S",
+                        Long.toString(now.toEpochSecond(), Character.MAX_RADIX));
             }
             // Set FileSetIdentifier
             if (fileSetIdentifier == null || fileSetIdentifier.isEmpty()) {
@@ -680,11 +691,11 @@ public class UDFBuild {
                 }
             }
         }
-// build image
+        // build image
         out.nStage = 1;
         // -1 Write (One pass)
-        //  0 Write
-        //  1 Prepare
+        // 0 Write
+        // 1 Prepare
         long volumeSize = 0;
         do {
             if (out.nStage > 0) {
@@ -697,9 +708,9 @@ public class UDFBuild {
             } else if (outfile.equals("-")) {
                 System.err.print("\nWriting to STDOUT...\n\n");
                 out.setOutputStream(System.out);
-//            } else if (outfile.charAt(0) == '|') {
-//                String cmd = outfile.substring(1);
-//                System.err.printf("\nPiping to: %s\n\n", cmd);
+                // } else if (outfile.charAt(0) == '|') {
+                // String cmd = outfile.substring(1);
+                // System.err.printf("\nPiping to: %s\n\n", cmd);
             } else {
                 System.err.printf("\nWriting to: %s\n\n", outfile);
                 out.setOutputStream(new FileOutputStream(outfile));
@@ -712,12 +723,12 @@ public class UDFBuild {
             UDFBuild.systemArea(out);
             UDFBuild.volumeRecognitionArea(out);
             logicalVolumeIntegrityDesc(out);
-            PARTITION:
+
             if (true) {
                 if (!compactImage) {
                     padTo(out, 256 - 16, null);
                     volumeDescriptorSequence(out, true);
-//                    padTo(out, 256);
+                    // padTo(out, 256);
                     anchorVolumeDescriptorPointer(out);
                     partitionStart(out);
                     filesetDescriptor(out, root);
@@ -731,7 +742,7 @@ public class UDFBuild {
                     partitionStart(out);
                     filesetDescriptor(out, root);
                     long padBlocks = 256 - 16 - out.nExtent;
-// compact
+                    // compact
                     LinkedList<DataDesc> extents2 = new LinkedList<>();
                     Iterator<DataDesc> li = extents.iterator();
                     while ((padBlocks > 0) && li.hasNext()) {
@@ -741,15 +752,15 @@ public class UDFBuild {
                             padBlocks--;
                             continue;
                         } else {
-//                            long size = cur.node.getData().size;
-//                            if (size > 0) {
-//                                long blocks = out.calcBlocks(size);
-//                                if (blocks <= padBlocks) {
-//                                    writeExtent(out, cur);
-//                                    padBlocks -= blocks;
-//                                    continue;
-//                                }
-//                            }
+                            // long size = cur.node.getData().size;
+                            // if (size > 0) {
+                            // long blocks = out.calcBlocks(size);
+                            // if (blocks <= padBlocks) {
+                            // writeExtent(out, cur);
+                            // padBlocks -= blocks;
+                            // continue;
+                            // }
+                            // }
                         }
                         extents2.add(cur);
                     }
@@ -779,8 +790,8 @@ public class UDFBuild {
                     writeExtent(out, desc);
                 }
                 partitionEnd(out);
-//                volumeDescriptorSequence(out, true);
-//                anchorVolumeDescriptorPointer(out);
+                // volumeDescriptorSequence(out, true);
+                // anchorVolumeDescriptorPointer(out);
                 anchorVolumeDescriptorPointer(out);
                 volumeDescriptorSequence(out, true);
                 out.padBlocks((256 - 1) - 16 - 16);
@@ -806,13 +817,17 @@ public class UDFBuild {
                 System.err.printf("%20s: %s\n", "VolumeSize", volumeSize);
             }
             System.err.printf("Entries: Files %d, Directories %d\n", this.nFiles, this.nDirectories);
-            System.err.printf("Image Size %d sectors, %s, %s wasted\n", out.nExtent, BinSize.binsizef(volumeSize), BinSize.binsizef(out.nWasted));
+            System.err.printf("Image Size %d sectors, %s, %s wasted\n", out.nExtent, BinSize.binsizef(volumeSize),
+                    BinSize.binsizef(out.nWasted));
         } while (out.nStage-- > 0);
     }
 }
 /*
-
-K:/wrx/java/mkimg/bin/mkimg.cmd K:\app\nt\BootICE -o C:/temp/udf.iso && K:/pub/000/udf_test.exe -ecclength 1  C:/temp/udf.iso >  C:/temp/udf.log
-mkimg.cmd K:\app\nt\PyPy3\x86 -o C:/temp/udf.img --hd && K:/pub/000/udf_test.exe -ecclength 1 -blocksize 512 C:/temp/udf.img >  C:/temp/udf.log
-mee --cd K:/wrx/java/mkimg -- mvn-pe package
+ * 
+ * K:/wrx/java/mkimg/bin/mkimg.cmd K:\app\nt\BootICE -o C:/temp/udf.iso &&
+ * K:/pub/000/udf_test.exe -ecclength 1 C:/temp/udf.iso > C:/temp/udf.log
+ * mkimg.cmd K:\app\nt\PyPy3\x86 -o C:/temp/udf.img --hd &&
+ * K:/pub/000/udf_test.exe -ecclength 1 -blocksize 512 C:/temp/udf.img >
+ * C:/temp/udf.log
+ * mee --cd K:/wrx/java/mkimg -- mvn-pe package
  */

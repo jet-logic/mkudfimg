@@ -11,17 +11,16 @@ package mkimg;
 public class BinSize {
 
     static short[] binsize(long value) {
-        byte units[] = {0, 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'};
+        byte units[] = { 0, 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y' };
         short frct = 0;
         short unit = 0;
-        short size = 0;
         while (value > 10000) {
             frct = (short) (((value % (1 << 10)) * 100) >> 10); // (value%1024)*(100/1024)
             value = value >> 10; // value/(1**1024)
             ++unit;
 
         }
-        return new short[]{(short)value, frct, units[unit]};
+        return new short[] { (short) value, frct, units[unit] };
     }
 
     static String binsizef(long value) {
