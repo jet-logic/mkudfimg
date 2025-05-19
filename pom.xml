@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>jet-logic</groupId>
-    <artifactId>mkimg</artifactId>
+    <artifactId>mkudfimg</artifactId>
     <version>1.0-alpha</version>
     <packaging>jar</packaging>
     <properties>
@@ -15,31 +15,9 @@
     <build>
         <directory>${java.io.tmpdir}/F9Iud1</directory>
         <plugins>
-            <!-- <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.3.0</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>mkimg.Main</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin> -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <!-- <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <archive>
-                        <manifest>
-                            <mainClass>mkimg.Main</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration> -->
                 <executions>
                     <execution>
                         <id>create-project-bundle</id>

@@ -1,7 +1,7 @@
 package udf;
 
-import mkimg.Inode;
-import mkimg.Node;
+import mkudfimg.Inode;
+import mkudfimg.Node;
 
 abstract public class DataDesc {
 

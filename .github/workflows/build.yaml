@@ -28,15 +28,16 @@ jobs:
       - name: Find
         run: |
           ls -lhAR .build
-          mv -v .build/mkimg*.jar bin/mkimg.jar
+          mv -v .build/mkudfimg*.jar bin/mkudfimg.jar
           ls -lhAR bin
       - name: Help
         run: |
-          sh bin/mkimg.sh --help
+          sh bin/mkudfimg.sh --help
+          sh bin/mkudfimg.sh --version
 
       - name: Run
         run: |
-          sh bin/mkimg.sh src -o /tmp/img.udf
+          sh bin/mkudfimg.sh src -o /tmp/img.udf
 
       # - name: Run tests
       #   run: mvn -B test

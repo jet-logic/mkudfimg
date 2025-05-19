@@ -13,5 +13,5 @@ fi
 
 BASE=$(dirname "$SCRIPT")
 
-java -ea -cp "$BASE"/mkimg.jar mkimg.Main "$@"
+java -ea -cp "$BASE"/mkudfimg.jar mkudfimg.Main "$@"
 

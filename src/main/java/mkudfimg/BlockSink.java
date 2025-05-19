@@ -1,4 +1,4 @@
-package mkimg;
+package mkudfimg;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -42,9 +42,10 @@ public class BlockSink extends OutputStream {
         this.nExtent += (x / this.blockSize);
         this.nLeft = (x % this.blockSize);
         if (this.nLeft == 0 && (this.nExtent > tick)) {
-//            if (this.nExtent > 0) {
-            System.err.printf("@%9d %7.2fMiB Written... \r", this.nExtent, (this.nExtent / (1024.0 * 1024.0)) * this.blockSize);
-//            }
+            // if (this.nExtent > 0) {
+            System.err.printf("@%9d %7.2fMiB Written... \r", this.nExtent,
+                    (this.nExtent / (1024.0 * 1024.0)) * this.blockSize);
+            // }
             tick = this.nExtent + ((32 * 1024 * 1024) / this.blockSize);
         }
     }

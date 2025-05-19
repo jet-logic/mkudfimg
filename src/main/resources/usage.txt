@@ -1,7 +1,7 @@
-mkimg 1.0-alpha - UDF/ISO image creation utility
+mkudfimg 1.0-alpha - UDF/ISO image creation utility
 
 Usage:
-  mkimg [options] <input paths...>
+  mkudfimg [options] <input paths...>
 
 Options:
   -o, --output <file>           Output image file
@@ -23,13 +23,13 @@ Options:
   -h, --help                    Show this help message
 
 Description:
-  mkimg creates a UDF-compatible image from given input files and directories.
+  mkudfimg creates a UDF-compatible image from given input files and directories.
   It supports inode caching, duplicate file linking, symbolic link handling,
   manifest generation, and output customization.
 
 Examples:
-  mkimg -o output.iso -V "Backup2025" --manifest src_dir/
-  mkimg --hd --compact -f -H --trim-empty myproject/
+  mkudfimg -o output.iso -V "Backup2025" --manifest src_dir/
+  mkudfimg --hd --compact -f -H --trim-empty myproject/
 
 Note:
   The output image is written to the specified file using either CD (2048 bytes)

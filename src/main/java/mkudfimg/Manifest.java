@@ -1,4 +1,4 @@
-package mkimg;
+package mkudfimg;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -51,7 +51,7 @@ public class Manifest {
                     p.print('\n');
                 }
             }
-//            p.flush();
+            // p.flush();
         }
     }
 

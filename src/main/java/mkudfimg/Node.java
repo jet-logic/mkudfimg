@@ -1,4 +1,4 @@
-package mkimg;
+package mkudfimg;
 
 import java.util.Collections;
 import java.util.Iterator;

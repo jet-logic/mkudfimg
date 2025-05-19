@@ -1,4 +1,4 @@
-package mkimg;
+package mkudfimg;
 
 import java.io.Console;
 import java.io.FileOutputStream;
@@ -822,12 +822,3 @@ public class UDFBuild {
         } while (out.nStage-- > 0);
     }
 }
-/*
- * 
- * K:/wrx/java/mkimg/bin/mkimg.cmd K:\app\nt\BootICE -o C:/temp/udf.iso &&
- * K:/pub/000/udf_test.exe -ecclength 1 C:/temp/udf.iso > C:/temp/udf.log
- * mkimg.cmd K:\app\nt\PyPy3\x86 -o C:/temp/udf.img --hd &&
- * K:/pub/000/udf_test.exe -ecclength 1 -blocksize 512 C:/temp/udf.img >
- * C:/temp/udf.log
- * mee --cd K:/wrx/java/mkimg -- mvn-pe package
- */

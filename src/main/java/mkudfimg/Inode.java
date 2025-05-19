@@ -1,4 +1,4 @@
-package mkimg;
+package mkudfimg;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
@@ -14,7 +14,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.ZoneOffset;
 
 public abstract class Inode {
-// permission
+    // permission
 
     static final short S_IRWXU = 00700;
     static final short S_IRUSR = 00400;
@@ -28,7 +28,7 @@ public abstract class Inode {
     static final short S_IROTH = 00004;
     static final short S_IWOTH = 00002;
     static final short S_IXOTH = 00001;
-// file type
+    // file type
     static final int S_IFDIR = 0040000;
     static final int S_IFCHR = 0020000;
     static final int S_IFBLK = 0060000;
@@ -36,25 +36,25 @@ public abstract class Inode {
     static final int S_IFIFO = 0010000;
     static final int S_IFLNK = 0120000;
     static ZoneOffset tzOffset = null;
-// extra
+    // extra
     static final int X_IS_MANIFEST = 1 << 16;
     static final int X_IS_COMMAND = 1 << 17;
     static String HASH_ALGORITHM = "MD5";
-// Attributes
+    // Attributes
     public int mode = 0;
     public int uid = 0;
     public int gid = 0;
     public long size = -1;
-//    public long mtime = Long.MIN_VALUE;
-//    public long ctime = Long.MIN_VALUE;
-//    public long atime = Long.MIN_VALUE;
+    // public long mtime = Long.MIN_VALUE;
+    // public long ctime = Long.MIN_VALUE;
+    // public long atime = Long.MIN_VALUE;
     public Object mtime = null;
     public Object ctime = null;
     public Object atime = null;
-//    public short mtimeo = Short.MIN_VALUE;
-//    public short ctimeo = Short.MIN_VALUE;
-//    public short atimeo = Short.MIN_VALUE;
-// Build Attributes
+    // public short mtimeo = Short.MIN_VALUE;
+    // public short ctimeo = Short.MIN_VALUE;
+    // public short atimeo = Short.MIN_VALUE;
+    // Build Attributes
     public int sort = 0;
     public int nlink = 0;
     public int flag = 0;
@@ -62,7 +62,7 @@ public abstract class Inode {
     public long auxB = 0;
     private byte[] hash = null;
     Inode same = null;
-//
+    //
 
     public byte[] getHash() {
         byte[] _hash = this.hash;
@@ -101,7 +101,7 @@ public abstract class Inode {
         }
     }
 
-//
+    //
     public boolean isDirectory() {
         return (S_IFDIR & mode) == S_IFDIR;
     }
@@ -134,7 +134,7 @@ public abstract class Inode {
         }
     }
 
-//    abstract public byte[] calcHash() throws IOException;
+    // abstract public byte[] calcHash() throws IOException;
     abstract public InputStream getInputStream() throws IOException;
 
     public byte[] calcHash() throws IOException {
@@ -225,15 +225,16 @@ public abstract class Inode {
         if (symlink) {
             ino = new Symlink(Files.readSymbolicLink(path).toString());
         } else if (a.isDirectory()) {
-//            System.err.println("DIR");
+            // System.err.println("DIR");
             ino = new File(S_IFDIR, path.toString());
         } else {
-//            System.err.println("REG");
+            // System.err.println("REG");
             ino = new File(S_IFREG, path.toString());
             ino.setLength(a.size());
         }
         return ino;
     }
+
     static int BUF_SIZE = 4 * 1024 * 1024;
 
     static public class File extends Inode {
@@ -256,7 +257,7 @@ public abstract class Inode {
 
         @Override
         public InputStream getInputStream() throws IOException {
-           // System.err.printf("getInputStream: %s\n", path);
+            // System.err.printf("getInputStream: %s\n", path);
             return new FileInputStream(path);
         }
     }
@@ -290,17 +291,20 @@ public abstract class Inode {
 
         @Override
         public byte[] calcHash() throws IOException {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods,
+                                                                           // choose Tools | Templates.
         }
 
         @Override
         public InputStream getInputStream() throws IOException {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods,
+                                                                           // choose Tools | Templates.
         }
 
         @Override
         public long getLength() throws IOException {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods,
+                                                                           // choose Tools | Templates.
         }
 
     }

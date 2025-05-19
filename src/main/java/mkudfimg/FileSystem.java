@@ -1,4 +1,4 @@
-package mkimg;
+package mkudfimg;
 
 import java.io.Console;
 import java.io.IOException;
@@ -7,7 +7,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -15,11 +14,12 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.stream.Stream;
-import mkimg.Inode.Symlink;
+
+import mkudfimg.Inode.Symlink;
 
 public class FileSystem {
 
-    // sources tree   
+    // sources tree
     private TreeNode root = null;
     boolean cacheInodes = false;
     boolean followLinks = true;
@@ -40,7 +40,7 @@ public class FileSystem {
     int verbosity = 2;
     int setArchived = 2;
     int fsLayout = 3;
-//    Hashtable<Object, Inode> inoCache = null;
+    // Hashtable<Object, Inode> inoCache = null;
     Map<Object, Inode> inoCache = new Hashtable<>();
 
     void addPath(String target) throws IOException {
@@ -93,8 +93,7 @@ public class FileSystem {
         if (this.userConsole == null) {
             return Files.list(dir);
         }
-        RETRY:
-        for (;;) {
+        RETRY: for (;;) {
             try {
                 return Files.list(dir);
             } catch (IOException ex) {
@@ -121,8 +120,7 @@ public class FileSystem {
         if (this.userConsole == null) {
             return Files.getFileAttributeView(path, BasicFileAttributeView.class).readAttributes();
         }
-        RETRY:
-        for (;;) {
+        RETRY: for (;;) {
             try {
                 return Files.getFileAttributeView(path, BasicFileAttributeView.class).readAttributes();
             } catch (IOException ex) {
@@ -152,26 +150,27 @@ public class FileSystem {
             Path path = it.next();
             TreeNode child = putPath(parent, path);
             Inode data = child.getData();
-//            System.err.println(data.mode);
+            // System.err.println(data.mode);
             if (data != null && data.isDirectory()) {
                 walk(child, path);
             }
         }
         /**/
- /*
-        list(dir).forEach(path -> {
-            TreeNode child;
-            try {
-                child = putPath(parent, path);
-                Inode data = child.getData();
-//            System.err.println(data.mode);
-                if (data != null && data.isDirectory()) {
-                    walk(child, path);
-                }
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });*/
+        /*
+         * list(dir).forEach(path -> {
+         * TreeNode child;
+         * try {
+         * child = putPath(parent, path);
+         * Inode data = child.getData();
+         * // System.err.println(data.mode);
+         * if (data != null && data.isDirectory()) {
+         * walk(child, path);
+         * }
+         * } catch (IOException ex) {
+         * throw new RuntimeException(ex);
+         * }
+         * });
+         */
     }
 
     Inode fetch(Path path, boolean symlink) throws IOException {
@@ -244,9 +243,9 @@ public class FileSystem {
         }
         // For each distinct size list, ...
         if (sizeMap.size() < 1) {
-            return new long[]{sameSize, sameHash, nRemoved};
+            return new long[] { sameSize, sameHash, nRemoved };
         }
-        //  sizeMap.values().
+        // sizeMap.values().
         for (Map.Entry<Long, LinkedHashSet<Inode>> entry : sizeMap.entrySet()) {
             LinkedHashSet<Inode> inoSet = entry.getValue();
             if (inoSet.size() > 1) {
@@ -293,6 +292,6 @@ public class FileSystem {
                 }
             }
         }
-        return new long[]{sameSize, sameHash, nRemoved};
+        return new long[] { sameSize, sameHash, nRemoved };
     }
 }

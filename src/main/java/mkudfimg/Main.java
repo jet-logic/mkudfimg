@@ -1,4 +1,4 @@
-package mkimg;
+package mkudfimg;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -64,7 +64,8 @@ public class Main {
                     noEmptyDirs = true;
                 } else if ("--trim-empty".equals(arg)) {
                     noEmptyDirs = noEmptyFiles = true;
-                } else if ("--help".equals(arg)) {// Use "/" if the path starts from the root of the resources folder
+                } else if ("--help".equals(arg)) {
+                    // Use "/" if the path starts from the root of the resources folder
                     try (InputStream is = Main.class.getResourceAsStream("/usage.txt")) {
                         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                         String line;
@@ -72,6 +73,10 @@ public class Main {
                             System.out.println(line);
                         }
                     }
+                    System.exit(0);
+                } else if ("--version".equals(arg)) {
+                    String version = Main.class.getPackage().getImplementationVersion();
+                    System.out.println(version);
                 } else {
                     throw new RuntimeException("Unexpected argument : \"" + arg + "\"");
                 }
