@@ -1,4 +1,4 @@
-mkudfimg 1.0-alpha - UDF/ISO image creation utility
+mkudfimg UDF/ISO image creation utility
 
 Usage:
   mkudfimg [options] <input paths...>
@@ -34,4 +34,3 @@ Examples:
 Note:
   The output image is written to the specified file using either CD (2048 bytes)
   or HD (512 bytes) block size depending on the mode selected.
-
