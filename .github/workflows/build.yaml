@@ -30,6 +30,7 @@ jobs:
           ls -lhAR .build
           mv -v .build/mkudfimg*.jar bin/mkudfimg.jar
           ls -lhAR bin
+
       - name: Help
         run: |
           sh bin/mkudfimg.sh --help
