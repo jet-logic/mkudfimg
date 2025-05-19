@@ -33,7 +33,7 @@ jobs:
 
       - name: Get Release Upload
         run: |
-          gh releas upload ${{github.event.release.tag_name}} bin_artifacts.tar.gz
+          gh release upload ${{github.event.release.tag_name}} bin_artifacts.tar.gz
         shell: bash
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
