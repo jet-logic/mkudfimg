@@ -77,6 +77,7 @@ public class Main {
                 } else if ("--version".equals(arg)) {
                     String version = Main.class.getPackage().getImplementationVersion();
                     System.out.println(version);
+                    System.exit(0);
                 } else {
                     throw new RuntimeException("Unexpected argument : \"" + arg + "\"");
                 }

@@ -26,6 +26,11 @@
                             <goal>single</goal>
                         </goals>
                         <configuration>
+                            <archive>
+                                <manifest>
+                                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                </manifest>
+                            </archive>
                             <outputDirectory>.build</outputDirectory>
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
