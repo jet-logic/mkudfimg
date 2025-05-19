@@ -28,10 +28,12 @@ jobs:
       - name: Find
         run: |
           ls -lhAR .build
+          mv -v .build/mkimg*.jar bin/mkimg.jar
+          ls -lhAR bin
 
       - name: Run
         run: |
-          sh bin/mkimg.sh . -o /tmp/img.udf
+          sh bin/mkimg.sh src -o /tmp/img.udf
 
       # - name: Run tests
       #   run: mvn -B test

@@ -1,1 +1,1 @@
-@java -ea -cp "%~dp0../.build/mkimg-1.0-alpha-jar-with-dependencies.jar" mkimg.Main %*
+@java -ea -cp "%~dp0mkimg.jar" mkimg.Main %*

@@ -13,6 +13,5 @@ fi
 
 BASE=$(dirname "$SCRIPT")
 
-# java -ea -cp $BASE/../target/mkimg-1.0-alpha.jar mkimg.Main "$@"
-java -ea -cp $BASE/../.build/mkimg-1.0-alpha-jar-with-dependencies.jar mkimg.Main "$@"
+java -ea -cp $BASE/mkimg.jar mkimg.Main "$@"
 
