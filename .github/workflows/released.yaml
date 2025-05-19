@@ -1,0 +1,39 @@
+name: Release with Artifacts
+
+on:
+  release:
+    types: [created] # Triggers when a new release is created
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: "temurin"
+
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+
+      - name: Move
+        run: |
+          ls -lhAR target
+          mv -v target/mkudfimg*.jar bin/mkudfimg.jar
+          ls -lhAR bin
+
+      - name: Create tar.gz of bin files
+        run: |
+          tar -czvf bin_artifacts.tar.gz bin/mk*
+          echo "ARTIFACT_PATH=bin_artifacts.tar.gz" >> $GITHUB_ENV
+
+      - name: Get Release Upload
+        run: |
+          gh release upload ${{github.event.release.tag_name}} bin_artifacts.tar.gz
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

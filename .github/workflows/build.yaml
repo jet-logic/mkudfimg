@@ -1,0 +1,45 @@
+name: Java CI
+
+on:
+  push:
+    branches: [main, devel]
+  pull_request:
+    branches: [main, devel]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: "temurin"
+
+      - name: Build with Maven
+        run: |
+          # mvn -B compile
+          mvn package
+
+      - name: Find
+        run: |
+          ls -lhAR target
+          mv -v target/mkudfimg*.jar bin/mkudfimg.jar
+          ls -lhAR bin
+
+      - name: Help
+        run: |
+          chmod +x bin/mkudfimg
+          bin/mkudfimg --help
+          bin/mkudfimg --version
+
+      - name: Run
+        run: |
+          bin/mkudfimg src -o /tmp/img.udf
+
+      # - name: Run tests
+      #   run: mvn -B test
