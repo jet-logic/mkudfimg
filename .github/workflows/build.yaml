@@ -30,6 +30,9 @@ jobs:
           ls -lhAR .build
           mv -v .build/mkimg*.jar bin/mkimg.jar
           ls -lhAR bin
+      - name: Help
+        run: |
+          sh bin/mkimg.sh --help
 
       - name: Run
         run: |

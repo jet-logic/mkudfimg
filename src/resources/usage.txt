@@ -1,0 +1,37 @@
+mkimg 1.0-alpha - UDF/ISO image creation utility
+
+Usage:
+  mkimg [options] <input paths...>
+
+Options:
+  -o, --output <file>           Output image file
+  -V <label>                    Set volume label
+      --hd                      Use hard disk block size (512 bytes)
+      --manifest, --checksum    Include a manifest file (checksum metadata)
+  -h, --cache-inodes            Enable inode caching
+      --no-cache-inodes         Disable inode caching
+  -H, --link-duplicates         Link files with duplicate content
+      --no-link-duplicates      Do not link duplicates
+  -f, --follow-links            Follow symbolic links
+      --no-follow-links         Do not follow symbolic links
+      --zero-size               Zero out file sizes
+      --compact                 Compact the resulting image
+      --trim-empty-file         Exclude empty files
+      --trim-empty-dir          Exclude empty directories
+      --trim-empty              Exclude both empty files and directories
+  --                            Treat all following arguments as paths
+  -h, --help                    Show this help message
+
+Description:
+  mkimg creates a UDF-compatible image from given input files and directories.
+  It supports inode caching, duplicate file linking, symbolic link handling,
+  manifest generation, and output customization.
+
+Examples:
+  mkimg -o output.iso -V "Backup2025" --manifest src_dir/
+  mkimg --hd --compact -f -H --trim-empty myproject/
+
+Note:
+  The output image is written to the specified file using either CD (2048 bytes)
+  or HD (512 bytes) block size depending on the mode selected.
+

@@ -1,6 +1,9 @@
 package mkimg;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -61,6 +64,14 @@ public class Main {
                     noEmptyDirs = true;
                 } else if ("--trim-empty".equals(arg)) {
                     noEmptyDirs = noEmptyFiles = true;
+                } else if ("--help".equals(arg)) {// Use "/" if the path starts from the root of the resources folder
+                    try (InputStream is = Main.class.getResourceAsStream("/usage.txt")) {
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            System.out.println(line);
+                        }
+                    }
                 } else {
                     throw new RuntimeException("Unexpected argument : \"" + arg + "\"");
                 }
