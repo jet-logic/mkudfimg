@@ -724,80 +724,80 @@ public class UDFBuild {
             UDFBuild.volumeRecognitionArea(out);
             logicalVolumeIntegrityDesc(out);
 
-            if (true) {
-                if (!compactImage) {
-                    padTo(out, 256 - 16, null);
-                    volumeDescriptorSequence(out, true);
-                    // padTo(out, 256);
-                    anchorVolumeDescriptorPointer(out);
-                    partitionStart(out);
-                    filesetDescriptor(out, root);
-                    for (DataDesc desc : extents) {
-                        writeExtent(out, desc);
-                    }
-                    partitionEnd(out);
-                    volumeDescriptorSequence(out, false);
-                    anchorVolumeDescriptorPointer(out);
-                } else {
-                    partitionStart(out);
-                    filesetDescriptor(out, root);
-                    long padBlocks = 256 - 16 - out.nExtent;
-                    // compact
-                    LinkedList<DataDesc> extents2 = new LinkedList<>();
-                    Iterator<DataDesc> li = extents.iterator();
-                    while ((padBlocks > 0) && li.hasNext()) {
-                        DataDesc cur = li.next();
-                        if (cur.isEntry()) {
-                            writeExtent(out, cur);
-                            padBlocks--;
-                            continue;
-                        } else {
-                            // long size = cur.node.getData().size;
-                            // if (size > 0) {
-                            // long blocks = out.calcBlocks(size);
-                            // if (blocks <= padBlocks) {
-                            // writeExtent(out, cur);
-                            // padBlocks -= blocks;
-                            // continue;
-                            // }
-                            // }
-                        }
-                        extents2.add(cur);
-                    }
-                    padTo(out, 256 - 16, null);
-
-                    volumeDescriptorSequence(out, true);
-                    anchorVolumeDescriptorPointer(out);
-                    if (!extents2.isEmpty()) {
-                        Iterator<DataDesc> li2 = extents2.iterator();
-                        while (li2.hasNext()) {
-                            writeExtent(out, li2.next());
-                        }
-                    }
-
-                    while (li.hasNext()) {
-                        writeExtent(out, li.next());
-                    }
-
-                    partitionEnd(out);
-                    volumeDescriptorSequence(out, false);
-                    anchorVolumeDescriptorPointer(out);
-                }
-            } else {
+            // if (true) {
+            if (!compactImage) {
+                padTo(out, 256 - 16, null);
+                volumeDescriptorSequence(out, true);
+                // padTo(out, 256);
+                anchorVolumeDescriptorPointer(out);
                 partitionStart(out);
                 filesetDescriptor(out, root);
                 for (DataDesc desc : extents) {
                     writeExtent(out, desc);
                 }
                 partitionEnd(out);
-                // volumeDescriptorSequence(out, true);
-                // anchorVolumeDescriptorPointer(out);
+                volumeDescriptorSequence(out, false);
                 anchorVolumeDescriptorPointer(out);
+            } else {
+                partitionStart(out);
+                filesetDescriptor(out, root);
+                long padBlocks = 256 - 16 - out.nExtent;
+                // compact
+                LinkedList<DataDesc> extents2 = new LinkedList<>();
+                Iterator<DataDesc> li = extents.iterator();
+                while ((padBlocks > 0) && li.hasNext()) {
+                    DataDesc cur = li.next();
+                    if (cur.isEntry()) {
+                        writeExtent(out, cur);
+                        padBlocks--;
+                        continue;
+                    } else {
+                        // long size = cur.node.getData().size;
+                        // if (size > 0) {
+                        // long blocks = out.calcBlocks(size);
+                        // if (blocks <= padBlocks) {
+                        // writeExtent(out, cur);
+                        // padBlocks -= blocks;
+                        // continue;
+                        // }
+                        // }
+                    }
+                    extents2.add(cur);
+                }
+                padTo(out, 256 - 16, null);
+
                 volumeDescriptorSequence(out, true);
-                out.padBlocks((256 - 1) - 16 - 16);
+                anchorVolumeDescriptorPointer(out);
+                if (!extents2.isEmpty()) {
+                    Iterator<DataDesc> li2 = extents2.iterator();
+                    while (li2.hasNext()) {
+                        writeExtent(out, li2.next());
+                    }
+                }
+
+                while (li.hasNext()) {
+                    writeExtent(out, li.next());
+                }
+
+                partitionEnd(out);
                 volumeDescriptorSequence(out, false);
                 anchorVolumeDescriptorPointer(out);
             }
+            // } else {
+            // partitionStart(out);
+            // filesetDescriptor(out, root);
+            // for (DataDesc desc : extents) {
+            // writeExtent(out, desc);
+            // }
+            // partitionEnd(out);
+            // // volumeDescriptorSequence(out, true);
+            // // anchorVolumeDescriptorPointer(out);
+            // anchorVolumeDescriptorPointer(out);
+            // volumeDescriptorSequence(out, true);
+            // out.padBlocks((256 - 1) - 16 - 16);
+            // volumeDescriptorSequence(out, false);
+            // anchorVolumeDescriptorPointer(out);
+            // }
             assert (out.nExtent <= 2147483647);
             assert (out.nExtent > (256 + 1));
             if (out.nStage <= 0) {

@@ -11,7 +11,7 @@ public class TreeNode implements Node<Inode> {
     static char SEPARATOR = '/';
     String name;
     String path;
-    Node parent;
+    TreeNode parent;
     Inode data;
     public int flag = 0;
     static final int IGNORE = 1;
@@ -28,7 +28,7 @@ public class TreeNode implements Node<Inode> {
     }
 
     @Override
-    public Node getParent() {
+    public TreeNode getParent() {
         return parent;
     }
 
@@ -42,10 +42,10 @@ public class TreeNode implements Node<Inode> {
         this.data = data;
     }
 
-    public Node getChild(String name) {
-        for (Node child : this) {
+    public TreeNode getChild(String name) {
+        for (Node<Inode> child : this) {
             if (child.getName().equals(name)) {
-                return child;
+                return (TreeNode) child;
             }
         }
         return null;
@@ -71,17 +71,17 @@ public class TreeNode implements Node<Inode> {
         }
         if (!this.isLeaf()) {
             final int i = depth + 1;
-            for (Node child : this) {
+            for (Node<Inode> child : this) {
                 ((TreeNode) child).writeTree(out, i);
             }
         }
     }
 
-    public Node internTree(String name) {
+    public TreeNode internTree(String name) {
         if (name.indexOf(SEPARATOR) >= 0) {
             throw new RuntimeException("Name has separator : \"" + name + "\"");
         }
-        Node child = getChild(name);
+        TreeNode child = (TreeNode) getChild(name);
         if (child == null) {
             child = new Directory(name, this);
             this.getChildren().add(child);
@@ -92,11 +92,11 @@ public class TreeNode implements Node<Inode> {
         return child;
     }
 
-    public Node internFile(String name) {
+    public TreeNode internFile(String name) {
         if (name.indexOf(SEPARATOR) >= 0) {
             throw new RuntimeException("Name has separator : \"" + name + "\"");
         }
-        Node child = getChild(name);
+        TreeNode child = getChild(name);
         if (child == null) {
             child = new File(name, this);
             this.getChildren().add(child);

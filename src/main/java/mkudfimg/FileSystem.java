@@ -69,7 +69,7 @@ public class FileSystem {
 
         if (Files.isSymbolicLink(path)) {
             if (!followLinks) {
-                Node child = parent.internFile(name);
+                Node<Inode> child = parent.internFile(name);
                 child.setData(fetch(path, true));
                 System.err.printf("%s -> <%s>\t\n", path, new String(((Symlink) child.getData()).data));
                 return (TreeNode) child;
@@ -77,13 +77,13 @@ public class FileSystem {
         }
         if (a.isDirectory()) {
             System.err.printf("%s/ +\t\r", path);
-            Node child = parent.internTree(name);
+            Node<Inode> child = parent.internTree(name);
             child.setData(fetch(path, false));
             // walk((TreeNode) child, path);
             return (TreeNode) child;
         } else {
             System.err.printf("%s +\t\r", path);
-            Node child = parent.internFile(name);
+            Node<Inode> child = parent.internFile(name);
             child.setData(fetch(path, false));
             return (TreeNode) child;
         }
